@@ -19,7 +19,7 @@ const App = () => {
     <div className="mx-2 text-center">
       <div
         className={`h-${height * barLength} bg-${
-          highlightedBars.includes(index) ? "green-500" : "blue-500"
+          highlightedBars.includes(index) ? "green-600" : "blue-500"
         } mx-1`}
         style={{ height: `${height * barLength}px`, width: "20px" }}
       ></div>
