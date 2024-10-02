@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-
-
+import { BlockPicker } from "react-color";
 
 const App = () => {
   const [bars, setBars] = useState([10, 10, 10, 10, 10, 10, 10, 10]);
@@ -10,18 +9,29 @@ const App = () => {
   const [isSorting, setIsSorting] = useState(false);
   const [animValue, setAnimValue] = useState(1);
   const [barLength, setBarLEngth] = useState(1);
+  const [progressPickerColor, setProgressPickerColor] = useState("#37d67a");
+  const [barPickerColor, setBarPickerColor] = useState("#37d67a");
   const appName = "VizzyFy";
-  //   const appName = "Algorithm Visualizer";
 
-  const delay = async (ms) => {await new Promise((resolve)=>setTimeout(resolve, ms*100))};
+  const delay = async (ms) => {
+    await new Promise((resolve) => setTimeout(resolve, ms * 100));
+  };
 
   const Bar = ({ height, index }) => (
     <div className="mx-2 text-center">
       <div
-        className={`h-${height * barLength} bg-${
-          highlightedBars.includes(index) ? "green-600" : "blue-500"
-        } mx-1`}
-        style={{ height: `${height * barLength}px`, width: "20px" }}
+        // bg-${highlightedBars.includes(index) ? "green-600" : "blue-500"}
+        className={`h-${height * barLength}
+          mx-1`}
+        style={{
+          height: `${height * barLength}px`,
+          width: "20px",
+          backgroundColor: `${
+            highlightedBars.includes(index)
+              ? progressPickerColor
+              : barPickerColor
+          }`,
+        }}
       ></div>
       <div className="bar-value">{height}</div>
     </div>
@@ -107,36 +117,35 @@ const App = () => {
       }
     }
     n--;
-    
+
     setIsSorting(false);
     return arr;
   };
-  
-  const partition = async(arr, low, high)=> {
-    setIsSorting(true)
+
+  const partition = async (arr, low, high) => {
+    setIsSorting(true);
 
     let pivot = arr[high];
     let i = low - 1;
     for (let j = low; j < high; j++) {
       setHighlightedBars([j, high]);
 
-
       if (arr[j] < pivot) {
         i++;
         [arr[i], arr[j]] = [arr[j], arr[i]];
         setBars([...arr]);
-        await delay(animValue)
+        await delay(animValue);
         // await new Promise((resolve) => setTimeout(resolve, animValue * 100));
       }
-      setHighlightedBars([])
+      setHighlightedBars([]);
     }
     [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
     setBars([...arr]);
     setIsSorting(false);
     return i + 1;
-  }
+  };
 
-  const quickSort = async (arr, low=0, high=arr.length-1) => {
+  const quickSort = async (arr, low = 0, high = arr.length - 1) => {
     if (low >= high) return;
 
     let pi = await partition(arr, low, high);
@@ -144,20 +153,21 @@ const App = () => {
     quickSort(arr, pi + 1, high);
   };
 
-  const mergeSort = async(arr)=>{
+  const mergeSort = async (arr) => {
     setIsSorting(true);
-    async function merge(left, right){
-      let result = [], leftIdx = 0, rightIdx = 0;
+    async function merge(left, right) {
+      let result = [],
+        leftIdx = 0,
+        rightIdx = 0;
 
-      while(leftIdx<left.length && rightIdx<right.length){
+      while (leftIdx < left.length && rightIdx < right.length) {
         setHighlightedBars([leftIdx, rightIdx]);
         await delay(animValue);
-        
-        if(left[leftIdx]<right[rightIdx]){
+
+        if (left[leftIdx] < right[rightIdx]) {
           result.push(left[leftIdx]);
           leftIdx++;
         } else {
-          
           result.push(right[rightIdx]);
           rightIdx++;
         }
@@ -168,10 +178,10 @@ const App = () => {
       return result.concat(left.slice(leftIdx)).concat(right.slice(rightIdx));
     }
 
-    async function mergeSortHelper(arr){
-      if(arr.length<=1) return arr;
+    async function mergeSortHelper(arr) {
+      if (arr.length <= 1) return arr;
 
-      const mid = Math.floor(arr.length/2);
+      const mid = Math.floor(arr.length / 2);
       const left = await mergeSortHelper(arr.slice(0, mid));
       const right = await mergeSortHelper(arr.slice(mid));
 
@@ -181,7 +191,7 @@ const App = () => {
     setBars(sortedArr);
     setIsSorting(false);
     return sortedArr;
-  }
+  };
 
   const handleSort = () => {
     const sortingAlgorithm = {
@@ -192,7 +202,6 @@ const App = () => {
       mergeSort,
     };
     if (sortingAlgorithm[algorithm]) {
-
       sortingAlgorithm[algorithm]([...bars]);
     }
   };
@@ -203,15 +212,16 @@ const App = () => {
     setPrevBars(inputArray);
   };
 
-  const handlleReset = () =>{
-    setBars(([...prevBars]));
-    setHighlightedBars([])
-  }
+  const handlleReset = () => {
+    setBars([...prevBars]);
+    setHighlightedBars([]);
+  };
   //   useEffect(handleArrayInput, [])
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <h1 className="text-2xl mb-4">{appName}</h1>
+
       <div className="mb-4">
         <input
           type="text"
@@ -280,7 +290,7 @@ const App = () => {
           {isSorting ? "Sorting..." : "Sort"}
         </button>
         <button
-        onClick={handlleReset}
+          onClick={handlleReset}
           className={`mt-4 mx-4 px-4 py-2 ${
             isSorting
               ? "bg-gray-400 cursor-not-allowed"
@@ -290,8 +300,34 @@ const App = () => {
           Reset
         </button>
       </div>
-      <div className="example-arr bg-green-600 rounded m-2 p-2 text-white shadow-lg">You can use this array for example <br />
-      98, 85, 47, 39, 42, 93, 32, 60, 24, 82, 80, 92, 12, 11, 99, 45, 65, 30, 75, 44</div>
+      <div className="colorPickers flex">
+        <div className="text-center">
+          Bar Indicators
+          <BlockPicker
+            className="m-4"
+            color={barPickerColor}
+            onChange={(color) => {
+              setBarPickerColor(color.hex);
+              console.log(barPickerColor);
+            }}
+          />
+        </div>
+        <div className="text-clip">
+          <h3>Progress Indicators</h3>
+          <BlockPicker
+            className="m-4"
+            color={progressPickerColor}
+            onChange={(color) => {
+              setProgressPickerColor(color.hex);
+            }}
+          />
+        </div>
+      </div>
+      <div className="example-arr bg-green-600 rounded m-2 p-2 text-white shadow-lg">
+        You can use this array for example <br />
+        98, 85, 47, 39, 42, 93, 32, 60, 24, 82, 80, 92, 12, 11, 99, 45, 65, 30,
+        75, 44
+      </div>
     </div>
   );
 };
