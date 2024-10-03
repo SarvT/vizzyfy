@@ -216,11 +216,10 @@ const App = () => {
     setBars([...prevBars]);
     setHighlightedBars([]);
   };
-  //   useEffect(handleArrayInput, [])
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-2xl mb-4">{appName}</h1>
+      <h1 className="text-2xl mb-4 bg-gray-900 text-white min-w-full text-center p-6 font-light cursor-pointer " >{appName}</h1>
 
       <div className="mb-4">
         <input
@@ -327,6 +326,10 @@ const App = () => {
         You can use this array for example <br />
         98, 85, 47, 39, 42, 93, 32, 60, 24, 82, 80, 92, 12, 11, 99, 45, 65, 30,
         75, 44
+      </div>
+
+      <div className="footer min-w-full p-12 bg-gray-900 text-white text-center">
+        &copy;Copyright by SarvT
       </div>
     </div>
   );
