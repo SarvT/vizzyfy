@@ -26,13 +26,13 @@ Here's a simple step-by-step process to help you get started with running a Vite
 1. **Clone the Repository**
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/SarvT/vizzyfy
    ```
 
 2. **Navigate to the Project Directory**
 
    ```bash
-   cd <project-directory>
+   cd vizzyfy
    ```
 
 3. **Install Dependencies**
